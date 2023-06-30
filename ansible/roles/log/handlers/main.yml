@@ -1,0 +1,14 @@
+---
+- name: log|Restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    enabled: true
+    state: restarted
+- name: log|Restart auditd
+  ansible.builtin.command: "service auditd restart"
+  environment:
+    PATH: "/usr/sbin:/usr/bin:/sbin:/bin"
+- name: log|Reload firewalld
+  ansible.builtin.systemd:
+    name: firewalld
+    state: reloaded

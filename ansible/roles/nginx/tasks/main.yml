@@ -1,0 +1,6 @@
+- name: RHEL | Install nginx
+  import_tasks: rhel-nginx.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
+- name: RHEL | Configure audit on nginx.conf
+  import_tasks: rhel-audit-nginx.yml
+  when: ansible_facts['os_family']|lower == 'redhat'

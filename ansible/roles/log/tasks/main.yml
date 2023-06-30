@@ -1,0 +1,6 @@
+- name: RHEL | Install and configure rsyslog
+  import_tasks: redhat.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
+- name: RHEL | Configure auditd
+  import_tasks: redhat-auditd.yml
+  when: ansible_facts['os_family']|lower == 'redhat'

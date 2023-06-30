@@ -1,0 +1,20 @@
+- name: Install rsyslog
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - rsyslog
+- name: Copy rsyslog.conf
+  ansible.builtin.copy:
+    src: "files/rsyslog.conf"
+    dest: "/etc/rsyslog.conf"
+    force: true
+  notify: log|Restart rsyslog
+- name: Open port 514 tcp/udp
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - 514/tcp
+    - 514/udp
