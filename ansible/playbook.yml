@@ -1,0 +1,37 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Set MSK timezone
+      ansible.builtin.copy:
+        remote_src: true
+        src: /usr/share/zoneinfo/Europe/Moscow
+        dest: /etc/localtime
+    - name: Restart chronyd
+      ansible.builtin.systemd:
+        name: chronyd
+        state: restarted
+    - name: enable firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        enabled: true
+        state: reloaded
+- hosts: webservers
+  become: yes
+  become_method: sudo
+  roles:
+    - role: nginx
+- hosts: logservers
+  become: yes
+  become_method: sudo
+  roles:
+    - role: log
+- hosts: logservers
+  gather_facts: false
+  tasks:
+    - debug:
+        msg: "{{ hostvars[item]['ip'] }}"
+      loop: "{{ groups.logservers }}"
+      #delegate_to: localhost
+      run_once: true

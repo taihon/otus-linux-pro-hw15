@@ -1,0 +1,10 @@
+---
+- name: Reload nginx
+  ansible.builtin.systemd:
+    name: nginx.service
+    enabled: yes
+    state: reloaded
+- name: Restart auditd
+  ansible.builtin.command: "service auditd restart"
+  environment:
+    PATH: "/usr/sbin:/usr/bin:/sbin:/bin"

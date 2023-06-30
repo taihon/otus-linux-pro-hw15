@@ -1,0 +1,31 @@
+---
+- name: Copy auditd rules
+  ansible.builtin.template:
+    src: "auditd.rules.j2"
+    dest: "/etc/audit/rules.d/audit.rules"
+    force: true
+- name: Install audispd-plugins
+  ansible.builtin.yum:
+    name: audispd-plugins
+    state: present
+- name: Change audit.conf - log format to raw
+  ansible.builtin.lineinfile:
+    path: /etc/audit/auditd.conf
+    regexp: "^log_format = "
+    line: log_format = RAW
+- name: Change audit.conf - name format to hostname
+  ansible.builtin.lineinfile:
+    path: /etc/audit/auditd.conf
+    regexp: "^name_format = NONE"
+    line: name_format = HOSTNAME
+- name: Enable audisp remote plugin
+  ansible.builtin.lineinfile:
+    path: /etc/audisp/plugins.d/au-remote.conf
+    regexp: "^active = no"
+    line: active = yes
+- name: Configure address for audisp
+  ansible.builtin.lineinfile:
+    path: /etc/audisp/audisp-remote.conf
+    regexp: "^remote_server =\\s*?$"
+    line: "remote_server = {{log_server}}"
+  notify: Restart auditd

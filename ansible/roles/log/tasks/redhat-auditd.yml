@@ -1,0 +1,13 @@
+---
+- name: Open 60/tcp
+  ansible.posix.firewalld:
+    port: 60/tcp
+    state: enabled
+    permanent: true
+  notify: log|Reload firewalld
+- name: Change audit.conf - enable tcp listener
+  ansible.builtin.lineinfile:
+    path: /etc/audit/auditd.conf
+    regexp: "^##tcp_listen_port = 60$"
+    line: tcp_listen_port = 60
+  notify: log|Restart auditd

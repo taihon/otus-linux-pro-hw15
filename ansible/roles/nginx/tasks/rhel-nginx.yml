@@ -1,0 +1,20 @@
+- name: Install nginx
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - epel-release
+    - nginx
+- set_fact:
+    log_server: "{{ hostvars['log']['ip'] }}"
+- name: Copy nginx.log from template
+  ansible.builtin.template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+  notify: Reload nginx
+- name: Open firewall ports
+  ansible.posix.firewalld:
+    service: http
+    permanent: yes
+    immediate: yes
+    state: enabled
