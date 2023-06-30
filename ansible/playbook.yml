@@ -17,16 +17,16 @@
         name: firewalld
         enabled: true
         state: reloaded
-- hosts: webservers
-  become: yes
-  become_method: sudo
-  roles:
-    - role: nginx
 - hosts: logservers
   become: yes
   become_method: sudo
   roles:
     - role: log
+- hosts: webservers
+  become: yes
+  become_method: sudo
+  roles:
+    - role: nginx
 - hosts: logservers
   gather_facts: false
   tasks:

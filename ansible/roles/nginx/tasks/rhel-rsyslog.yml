@@ -1,0 +1,7 @@
+---
+- name: Copy rsyslog rule
+  ansible.builtin.template:
+    src: "rsyslog-forward-crits.conf.j2"
+    dest: "/etc/rsyslog.d/rsyslog-forward-crits.conf"
+    force: true
+  notify: web|Restart rsyslog

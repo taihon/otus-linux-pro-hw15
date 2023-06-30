@@ -24,6 +24,8 @@
 
 Скриншоты:
 
+Задание 5:
+![скриншот](./log_system_rsyslog_xfer_crit_only.png)
 Задание 6:
 ![скриншот](./log_nginx_rsyslog_xfer.png)
 Задание 7:

@@ -4,3 +4,6 @@
 - name: RHEL | Configure audit on nginx.conf
   import_tasks: rhel-audit-nginx.yml
   when: ansible_facts['os_family']|lower == 'redhat'
+- name: RHEL | Configure critical log forward to network
+  import_tasks: rhel-rsyslog.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
